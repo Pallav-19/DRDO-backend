@@ -8,7 +8,7 @@ const login = async (req, res) => {
         if (!foundUser) return res.status(404).json({ message: "User not found" })
         if (foundUser.approved === false) return res.status(401).json({ message: "You are not yet approoved!" })
         if (foundUser.password !== password) return res.status(400).json({ message: "Incorrect password!" })
-        const token = jwt.sign({ userId: foundUser._id, role: foundUser.role, isAdmin: foundUser.isAdmin }, process.env.SECRET)
+        const token = jwt.sign({ userId: foundUser._id, role: foundUser.role, isAdmin: foundUser.isAdmin }, process.env.TOKEN_SECRET, { expiresIn: '1d' })
         res.json({ message: "login successful", token, role: foundUser.role, isAdmin: foundUser.isAdmin })
     }
     catch (err) {
